@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>JavaScript</title>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/processing.js/1.4.8/processing.min.js"></script>
+</head>
+<body>
+  <canvas id="canvas"></canvas>
+  <script>
+    var canvas = document.getElementById("canvas");
+    var processing = new Processing(canvas, function(processing) {
+        processing.size(400, 400);
+        processing.background(0xFFF);
+
+        var mouseIsPressed = false;
+        processing.mousePressed = function () { mouseIsPressed = true; };
+        processing.mouseReleased = function () { mouseIsPressed = false; };
+
+        var keyIsPressed = false;
+        processing.keyPressed = function () { keyIsPressed = true; };
+        processing.keyReleased = function () { keyIsPressed = false; };
+
+        var sine = function(deg){
+        return sin(deg/(180/3.1415926535));
+        }
+        var cosine = function(deg){
+            return cos(deg/(180/3.1415926535));
+        }
+        var rotate2 = function(deg){
+            rotate(deg/(180/3.1415926535));
+        }
+        function getImage(s) {
+            var url = "https://www.kasandbox.org/stylesheets/scratchpads-exec-package/images/" + s + ".png";
+            processing.externals.sketch.imageCache.add(url);
+            return processing.loadImage(url);
+        }
+
+        with (processing) {
+            // INSERT YOUR KHAN ACADEMY PROGRAM HERE
+
+var score = 0;
+var state = "start";
+var startTime;
+var time = 5;
+var highscore;
+var extratime = false;
+var doublepoints = false;
+var stalltime = false;
+var points = 300;
+var extratime_money = 0;
+var currentTime;
+fill(26, 20, 26);
+
+
+        //add stuff to buy and actions
+        //add what happens to the image when you buy it
+        //Stop clicking when game is over
+        //Add highscore
+
+
+  state = "start";
+var draw = function() {
+
+
+
+
+    if (state === "start") {
+        state = "start";
+        //START MENU
+        background(116, 230, 9);
+        fill(0, 255, 68);
+        rect(103, 100, 173, 74);
+        fill(242, 255, 0);
+        rect(103, 12, 173, 74);
+        fill(214, 39, 65);
+        textSize(25);
+        text("Points: " + points, 140, 268);
+        fill(0, 0, 0);
+        textSize(25);
+        text("START", 148, 146);
+        text("SHOP", 155, 57);
+        if (mouseIsPressed && mouseY > 12 && mouseY < 12+74 && mouseX > 103 && mouseX < 276) {
+            state = "store";
+        }
+        if (mouseIsPressed && mouseY > 100 && mouseY < 174 && mouseX > 103 && mouseX < 276) {
+            startTime = millis();
+            score = -1;
+            state = "play";
+        }
+    }
+
+
+    else if (state === "store") {
+        //store
+        background(242, 255, 0);
+        fill(242, 255, 0);
+        rect(35, 16, 75, 44);
+        fill(0,0,0);
+        textSize(25);
+        text("Back", 44, 47);
+         if (mouseIsPressed && mouseY > 16 && mouseY < 16+44 && mouseX > 35 && mouseX < 35+75) {
+            state = "start";
+        }
+
+        fill(0,0,0);
+        textSize(25);
+        text("Points: "+points,190, 47);
+
+
+        //extra time
+        fill(0,0,0);
+        textSize(25);
+        text("SHOP", 190, 90);
+        textSize(20);
+        text("Extra Time", 35, 133);
+        textSize(10);
+        text("This upgrade gives you 10 extra seconds!", 147, 130);
+        fill(242, 255, 0);
+        rect(340, 107, 50, 37);
+        fill(0,0,0);
+        textSize(20);
+        if (extratime === 1){
+            extratime_money = text("----", 343, 133);
+        }else{
+            extratime_money = text("$300", 343, 133);
+        }
+
+    if (mouseIsPressed && mouseY > 107 && mouseY < 107+35 && mouseX > 340 && mouseX < 340+50 && points>=300 && extratime === false) {
+            //extra time is bought
+            extratime = 1;
+            points = points-300;
+        }
+
+
+        //Double points
+        fill(0,0,0);
+        textSize(20);
+        text("Double Points", 35, 133+50);
+        textSize(10);
+        text("This upgrade doubles the points!", 175, 130+50);
+        fill(242, 255, 0);
+        rect(340, 107+50, 50, 37);
+        fill(0,0,0);
+        textSize(20);
+        if (doublepoints){
+            text("----", 343, 133+50);
+        }else{
+            text("$500", 343, 133+50);
+        }
+    if (mouseIsPressed && mouseY > 107+50 && mouseY < 107+50+37 && mouseX > 340 && mouseX < 340+50 && points>=500) {
+            //double points is bought
+            points = points-500;
+            doublepoints = true;
+        }
+
+
+
+        //Stall time
+        fill(0,0,0);
+        textSize(20);
+        text("Stall Time", 35, 133+100);
+        textSize(10);
+        text("This upgrade slows down time!", 175, 130+100);
+        fill(242, 255, 0);
+        rect(340, 107+100, 50, 37);
+        fill(0,0,0);
+        textSize(20);
+
+        if (stalltime){
+            text("----", 343, 133+100);
+        }else{
+            text("$500", 343, 133+100);
+        }
+
+    if (mouseIsPressed && mouseY > 107+100 && mouseY < 107+37+100 && mouseX > 340 && mouseX < 340+50 && points>=500) {
+            //stall time is bought
+            stalltime = true;
+            points = points-500;
+        }
+
+
+
+        //Get 50 Extra Points
+        fill(0,0,0);
+        textSize(20);
+        text("Plus 50", 35, 133+150);
+        textSize(10);
+        text("Get 50 extra points!", 175, 130+150);
+        fill(242, 255, 0);
+        rect(340, 107+150, 50, 37);
+        fill(0,0,0);
+        textSize(20);
+        text("$500", 343, 133+150);
+        if (mouseIsPressed && mouseY > 107+150 && mouseY < 107+150+37 && mouseX > 340 && mouseX < 340+50 && points>=500) {
+            //Get 50 Extra Points is bought
+            points = points-500;
+
+        }
+
+
+        //Win the Game
+        fill(0,0,0);
+        textSize(20);
+        text("Win The Game", 35, 133+200);
+        textSize(10);
+        text("Beat the game!", 200, 130+200);
+        fill(242, 255, 0);
+        rect(285, 107+200, 110, 37);
+        fill(0,0,0);
+        textSize(20);
+        text("$1,000,000", 290, 133+200);
+        if (mouseIsPressed && mouseY > 307  && mouseY < 307+37 && mouseX > 285 && mouseX < 285+110 && points>=1000000) {
+            //Beat the game is bought
+            state = "You_won";
+            points = points-1000000;
+        }
+
+    }
+
+
+    else if (state === "You_won"){
+        background(237, 21, 237);
+        fill(18, 210, 235);
+        textSize(75);
+        text("YOU WON!",5,250);
+
+    }
+
+    else if (state === "play") {
+        //PLAYING
+
+        mouseClicked = function() {
+            if(currentTime > 0){
+                //image(getImage("space/plus"), -85, -145, 600, 600);
+                if(doublepoints){
+                    score+=2;
+                }else{
+                    score++;
+                }
+            }
+        };
+        background(9, 9, 230);
+        image(getImage("space/plus"), 50, 50, 300, 300);
+        textSize(25);
+        text("Score:", 34, 29);
+        text(score, 122, 29);
+        text("Time:", 300, 29);
+
+        if (extratime === 1){
+            currentTime = (time+10)-((millis() - startTime) / 1000);
+        }else if(stalltime){
+            currentTime = time-((millis() - startTime) / 2000);
+        }else{
+            currentTime = time-((millis() - startTime) / 1000);
+        }
+        text(round(currentTime), 318, 62);
+        if (currentTime <= 0 ) {
+            state = "after";
+            points = points+score;
+            if (score > highscore) {
+                highscore = score;
+            }
+
+        }
+
+    }
+
+
+
+
+
+
+    else if (state === "after") {
+        //GAME IS OVER
+
+        background(255, 0, 0);
+
+        fill(13, 13, 13);
+        textSize(62);
+        text("GAME OVER", 15, 105);
+
+        fill(0, 255, 68);
+        rect(110, 200, 173, 74);
+
+        fill(0, 0, 0);
+        textSize(25);
+        text("CONTINUE", 130, 245);
+
+        fill(217, 141, 217);
+        textSize(25);
+        text("Your Score Is: " + score, 100, 170);
+
+        if (mouseIsPressed && mouseY > 200 && mouseY < 274 && mouseX > 110 && mouseX < 283) {
+            startTime = millis();
+            score = 0;
+            state = "start";
+
+        }
+
+
+
+
+
+    }
+
+};
+
+textSize(18);
+
+var start = function() {};
+
+
+        }
+
+
+
+
+        if (typeof draw !== 'undefined') processing.draw = draw;
+    });
+  </script>
+</body>
+</html>
